@@ -6,7 +6,7 @@
 //that div completely changes to black
 
 //Create a function named createCanvas
-function createCanvas(gridSize=16){
+function createCanvas(gridSize){
 //Create a div container named canvas that contains the grid
     const canvas = document.createElement("div");
     canvas.classList.add("canvas");
@@ -23,14 +23,8 @@ function createCanvas(gridSize=16){
             const columnDiv = document.createElement("div");
             columnDiv.classList.add("column");
             let size = 960/gridSize;
-            let myStyle = `
-            background-color: black; 
-            border-color: 2px solid white;
-            flex: 1; 
-            width: ${size}px; 
-            height: ${size}px;
-            `
-            columnDiv.style.cssText = myStyle;
+            columnDiv.style.cssText = `width: ${size}px; height: ${size}px;`;
+            eventListener(columnDiv);
             rowDiv.appendChild(columnDiv);
         }
         canvas.appendChild(rowDiv);
@@ -38,11 +32,36 @@ function createCanvas(gridSize=16){
     
     const body = document.querySelector("body");
     body.appendChild(canvas);
-    body.style.cssText = "display:flex; justify-content:center; align-items: center";
 
 }
 
-createCanvas();
+//Create a function that add event listener when the mouse rolls over a div
+//add event listener that detects a mouse roll over an element and changes the
+//bg color
+//add another event listener that detects when the mouse left the div element
+//and change the bg color back
+function eventListener(element){
+    element.addEventListener("mouseover", e => {
+       e.target.style.setProperty('background-color','white');
+       
+    });
+    element.addEventListener("mouseout", e => {
+        e.target.style.backgroundColor = 'black';
+    });
+}
+//add a prompt that asks user for the number of squares
+//use that to define square size
+//max no. of squares is 100
+function gridSize(){
+    let size;
+    do {
+        size = Number.parseInt(prompt("Enter the grid size: "));
+    }
+    while(!size);
+  
+    return size;
+}
+createCanvas(gridSize());
 
 
 

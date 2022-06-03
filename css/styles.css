@@ -1,0 +1,13 @@
+/**********************************tags****************************************/
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/**********************************class***************************************/
+.column {
+    background-color: black;
+    flex: 1;
+}
+
