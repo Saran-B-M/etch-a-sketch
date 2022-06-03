@@ -4,6 +4,7 @@
 //Instead of changing the color to a single color, randomly select colors for 
 //each div and add 10% black to passed over div so that after 10 passes only 
 //that div completely changes to black
+const body = document.querySelector("body");
 
 //Create a function named createCanvas
 function createCanvas(gridSize){
@@ -29,8 +30,6 @@ function createCanvas(gridSize){
         }
         canvas.appendChild(rowDiv);
     }
-    
-    const body = document.querySelector("body");
     body.appendChild(canvas);
 
 }
@@ -40,28 +39,52 @@ function createCanvas(gridSize){
 //bg color
 //add another event listener that detects when the mouse left the div element
 //and change the bg color back
+events = []
 function eventListener(element){
     element.addEventListener("mouseover", e => {
-       e.target.style.setProperty('background-color','white');
+       let hue = Math.floor(Math.random()*361);
+       let sat = Math.floor(Math.random()*101);
+       let light = Math.floor(Math.random()*101);
+       e.target.style.setProperty('background-color',`hsl(${hue}, 
+        ${sat}%, ${light}%)`);
+       events.push([e.target, hue, sat, light, light/10]);
+       events.forEach(element => {
+           element[3] = element[3]-element[4];
+           element[0].style.backgroundColor = `hsl(${element[1]}, 
+            ${element[2]}%, ${element[3]}%)`;
+       });
+       
        
     });
     element.addEventListener("mouseout", e => {
-        e.target.style.backgroundColor = 'black';
+        
     });
 }
-//add a prompt that asks user for the number of squares
-//use that to define square size
-//max no. of squares is 100
+
+//add a button that prompts user for the number of squares
+const btn = document.createElement("button");
+btn.textContent = "New canvas";
+body.appendChild(btn);
+
+btn.addEventListener("click", function(){
+
+    const canvas = document.querySelector(".canvas");
+    //if the canvas already exists remove it
+    if(canvas) body.removeChild(canvas);
+    //create new canvas
+    createCanvas(gridSize());
+})
+
 function gridSize(){
     let size;
     do {
         size = Number.parseInt(prompt("Enter the grid size: "));
     }
     while(!size);
-  
-    return size;
+//max no. of squares is 100
+    return size>100?100:size;
 }
-createCanvas(gridSize());
+
 
 
 
